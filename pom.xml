@@ -19,7 +19,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <cloudhsmVersion>3.1.2</cloudhsmVersion>
+                <cloudhsmVersion>3.0.0</cloudhsmVersion>
                 <cloudhsmJarPath>/opt/cloudhsm/java/cloudhsm-${cloudhsmVersion}.jar</cloudhsmJarPath>
             </properties>
         </profile>
@@ -294,6 +294,58 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>build-create-my-wrapping-key</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <outputFile>target/assembly/create-my-wrapping-key.jar</outputFile>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.amazonaws.cloudhsm.examples.CreateMyWrappingKey</mainClass>
+                                </transformer>
+                            </transformers>
+                            <finalName>create-my-wrapping-key</finalName>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>build-my-hsm-test</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <outputFile>target/assembly/my-hsm-test.jar</outputFile>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.amazonaws.cloudhsm.examples.MyHSMTest</mainClass>
+                                </transformer>
+                            </transformers>
+                            <finalName>my-hsm-test</finalName>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>build-aes-gcm-wrapping-runner</id>
                         <phase>package</phase>
                         <goals>
@@ -449,7 +501,7 @@
                             </filters>
                         </configuration>
                     </execution>
-                     <execution>
+                    <execution>
                         <id>build-ecdhops-runner</id>
                         <phase>package</phase>
                         <goals>
@@ -579,32 +631,32 @@
                             </filters>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>build-custom-key-attributes</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <outputFile>target/assembly/custom-key-attributes-runner.jar</outputFile>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.amazonaws.cloudhsm.examples.CustomKeyAttributesRunner</mainClass>
-                                </transformer>
-                            </transformers>
-                            <finalName>custom-key-attributes-runner</finalName>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/*.SF</exclude>
-                                        <exclude>META-INF/*.DSA</exclude>
-                                        <exclude>META-INF/*.RSA</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                        </configuration>
-                    </execution>
+                    <!--                    <execution>-->
+                    <!--                        <id>build-custom-key-attributes</id>-->
+                    <!--                        <phase>package</phase>-->
+                    <!--                        <goals>-->
+                    <!--                            <goal>shade</goal>-->
+                    <!--                        </goals>-->
+                    <!--                        <configuration>-->
+                    <!--                            <outputFile>target/assembly/custom-key-attributes-runner.jar</outputFile>-->
+                    <!--                            <transformers>-->
+                    <!--                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
+                    <!--                                    <mainClass>com.amazonaws.cloudhsm.examples.CustomKeyAttributesRunner</mainClass>-->
+                    <!--                                </transformer>-->
+                    <!--                            </transformers>-->
+                    <!--                            <finalName>custom-key-attributes-runner</finalName>-->
+                    <!--                            <filters>-->
+                    <!--                                <filter>-->
+                    <!--                                    <artifact>*:*</artifact>-->
+                    <!--                                    <excludes>-->
+                    <!--                                        <exclude>META-INF/*.SF</exclude>-->
+                    <!--                                        <exclude>META-INF/*.DSA</exclude>-->
+                    <!--                                        <exclude>META-INF/*.RSA</exclude>-->
+                    <!--                                    </excludes>-->
+                    <!--                                </filter>-->
+                    <!--                            </filters>-->
+                    <!--                        </configuration>-->
+                    <!--                    </execution>-->
                 </executions>
             </plugin>
 
@@ -703,7 +755,7 @@
                             </arguments>
                         </configuration>
                     </execution>
-                     <execution>
+                    <execution>
                         <id>verify-aes-gcm-wrapping</id>
                         <phase>verify</phase>
                         <goals>
