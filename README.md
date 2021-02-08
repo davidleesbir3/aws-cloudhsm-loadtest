@@ -1,7 +1,7 @@
-# aws-cloudhsm-jce-examples
+# aws-cloudhsm-loadtest
 
-These sample applications demonstrate how to use the JCE with CloudHSM. They show basic functionality,
-as well as best practices regarding performance.
+This branch is used for AWS CloudHSM performance investigation, in which runner classes were added to the original code base of [aws-cloudhsm-jce-examples](https://github.com/aws-samples/aws-cloudhsm-jce-examples). If you want to see the original code base, switch to `master` branch.
+
 
 ## License Summary
 
@@ -73,3 +73,17 @@ java -ea -Djava.library.path=/opt/cloudhsm/lib/ -jar target/assembly/login-runne
 ## Running and verifying all the samples
 
 To run and verify all the samples together, run the command ```mvn verify```
+
+## Create a persistent wrapping key in HSM
+
+You need to create a wrapping key first before you can run the other runner class `MyHSMTest`.
+```
+java -ea -Djava.library.path=/opt/cloudhsm/lib/ -jar target/assembly/create-my-wrapping-key.jar
+```
+
+## Run the simulation 
+
+```
+java -ea -Djava.library.path=/opt/cloudhsm/lib/ -jar target/assembly/my-hsm-test.jar
+```
+
