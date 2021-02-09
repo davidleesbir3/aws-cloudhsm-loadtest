@@ -19,10 +19,17 @@ import java.util.Base64;
 import java.util.UUID;
 
 /**
+ * This runner performs the following to simulate HSM operations involved in MoveGSCoin from GSCoin project:
  *
+ * 1. Generate two EC key pairs.
+ * 2. Retrieve an AES-256 wrapping key from HSM. The wrapping key was previously created.
+ * 3. Wrap the private keys of the two key pairs created in step 1, it produces wrapped private key material.
+ * 4. Unwrap the wrapped private key material.
+ * 5. Use the unwrapped private key (either one) to sign a mock data payload (~60KB)
+ * 6. Destroy the key objects created during the process.
  */
 public class MyHSMTest {
-    public static void main(String[] args) throws Exception, CFM2Exception {
+    public static void main(String[] args) throws Exception, CFM2Exception  {
         try {
             Security.addProvider(new com.cavium.provider.CaviumProvider());
         } catch (IOException ex) {
@@ -30,8 +37,13 @@ public class MyHSMTest {
             return;
         }
 
+        if (args.length == 0) {
+            throw new IllegalArgumentException("Please specify wrapping key handle as argument. ");
+        }
+
         // Retrieve the private key
-        int keyHandle = 789730;
+        int keyHandle = Integer.parseInt(args[0]);
+
         CaviumKey hsmWrappingKey = retrieveWrappingKeyFromHSM(keyHandle);
         System.out.printf("\n\nRetrieved AES wrapping key (%d) from HSM: %s\n", keyHandle, hsmWrappingKey);
 

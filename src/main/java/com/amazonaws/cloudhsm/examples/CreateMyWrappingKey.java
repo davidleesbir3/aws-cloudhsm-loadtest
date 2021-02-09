@@ -2,6 +2,8 @@ package com.amazonaws.cloudhsm.examples;
 
 import com.cavium.cfm2.CFM2Exception;
 import com.cavium.key.parameter.CaviumAESKeyGenParameterSpec;
+import com.cavium.key.CaviumKey;
+import com.cavium.key.CaviumKeyAttributes;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -21,14 +23,15 @@ public class CreateMyWrappingKey {
             return;
         }
 
-        Key wrappingKey = createAESWrappingKey();
-        System.out.println("Created wrapping key: " + wrappingKey.toString());
+        String keyLabel = args.length > 0 ? args[0] : "master";
+        Key wrappingKey = createAESWrappingKey(keyLabel);
+        System.out.printf("Generated key label: %s, key handle: %d.\n", ((CaviumKey) wrappingKey).getLabel(), ((CaviumKey) wrappingKey).getHandle());
     }
 
     // Creates a non-extractable, persistent AES wrapping key
-    public static Key createAESWrappingKey() throws Exception {
+    public static Key createAESWrappingKey(String label) throws Exception {
         KeyGenerator keyGen = KeyGenerator.getInstance("AES", "Cavium");
-        keyGen.init(new CaviumAESKeyGenParameterSpec(256, "master", false, true));
+        keyGen.init(new CaviumAESKeyGenParameterSpec(256, label, false, true));
         SecretKey aesKey = keyGen.generateKey();
         return aesKey;
     }
