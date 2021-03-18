@@ -78,12 +78,12 @@ To run and verify all the samples together, run the command ```mvn verify```
 
 You need to create a wrapping key first before you can run the other runner class `MyHSMTest`.
 ```
-java -ea -Djava.library.path=/opt/cloudhsm/lib/ -jar target/assembly/create-my-wrapping-key.jar
+java -ea -Djava.library.path=/opt/cloudhsm/lib/ -jar target/assembly/create-my-wrapping-key.jar [key label]
 ```
 
 ## Run the simulation 
 
 ```
-java -ea -Djava.library.path=/opt/cloudhsm/lib/ -jar target/assembly/my-hsm-test.jar
+java -ea -Djava.library.path=/opt/cloudhsm/lib/ -jar target/assembly/my-hsm-test.jar <wrapping key handle>
 ```
 
