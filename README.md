@@ -70,18 +70,18 @@ native library in `/opt/cloudhsm/lib`. Jars can be run using the following comma
 java -ea -Djava.library.path=/opt/cloudhsm/lib/ -jar target/assembly/login-runner.jar --help
 ```
 
-## Running and verifying all the samples
+The main runner in our performance investigation is `MyHSMTest`. To run it, you need to provide an AES wrapping key, as 
+the runner will need it to wrap generated key pairs. You don't need to do this step if you already have a wrapping key 
+in HSM. 
 
-To run and verify all the samples together, run the command ```mvn verify```
+To generate a new wrapping key, execute the following command:
 
-## Create a persistent wrapping key in HSM
-
-You need to create a wrapping key first before you can run the other runner class `MyHSMTest`.
 ```
 java -ea -Djava.library.path=/opt/cloudhsm/lib/ -jar target/assembly/create-my-wrapping-key.jar [key label]
 ```
+You can specify any key label you wish. Make a note of the handle of the new wrapping key.
 
-## Run the simulation 
+To run the main runner:
 
 ```
 java -ea -Djava.library.path=/opt/cloudhsm/lib/ -jar target/assembly/my-hsm-test.jar <wrapping key handle>
